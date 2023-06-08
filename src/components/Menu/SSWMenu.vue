@@ -3,6 +3,7 @@
     <!-- Menu superior -->
     <div class="menu-superior">
       <div class="botones-superior-navegacion-container">
+        <div class="logo">SSW</div>
         <button
           v-for="opcion in opcionesMenuSuperior"
           :key="opcion"
@@ -21,9 +22,11 @@
         class="menu-lateral"
         :class="{ 'menu-reducido': !mostrarMenuLateral }"
       >
-        <button class="toggle-button"
-                :class="{ 'menu-reducido-button': mostrarMenuLateral }"
-@click="toggleMenu">
+        <button
+          class="toggle-button"
+          :class="{ 'menu-reducido-button': mostrarMenuLateral }"
+          @click="toggleMenu"
+        >
           <i
             :class="
               mostrarMenuLateral
@@ -35,7 +38,7 @@
         <router-link
           v-for="subopcion in subopcionesMenu[opcionSeleccionada]"
           :key="subopcion"
-          :to="subopcion.replace(/\s+/g, '-') "
+          :to="subopcion.replace(/\s+/g, '-')"
           class="subopcion"
         >
           <span v-if="!mostrarMenuLateral" class="subopcion-icono">
@@ -46,8 +49,8 @@
       </div>
 
       <!-- Contenido principal -->
-      <div class="main-content">
-        <router-view/>
+      <div class="main-content" @click="toggleMenuClose">
+        <router-view />
         <!-- Aquí va el contenido principal de la página -->
       </div>
     </div>
@@ -57,7 +60,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import VueRouter from "vue-router";
-
 
 @Component
 export default class Menu extends Vue {
@@ -101,9 +103,11 @@ export default class Menu extends Vue {
   toggleMenu() {
     this.mostrarMenuLateral = !this.mostrarMenuLateral;
   }
-
-  
-
+  toggleMenuClose() {
+    if(this.mostrarMenuLateral){
+      this.mostrarMenuLateral = false
+    }
+  }
 }
 </script>
 
@@ -117,24 +121,24 @@ export default class Menu extends Vue {
 }
 
 .menu-superior {
-  background-color: #0078d7;
+  background-color: var(--menu-background-color);
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
   z-index: 100;
 }
 
 .botones-superior-navegacion-container {
-  margin-left: 70px;
+  display: inline-flex;
 }
 
 .menu-superior button {
   border: none;
   background-color: transparent;
   color: white;
-  padding: 5px 15px;
+  padding: 15px;
+  margin: 0;
   cursor: pointer;
   flex: 1;
   text-align: center;
@@ -147,25 +151,23 @@ export default class Menu extends Vue {
 }
 
 .menu-superior button:hover {
-  background-color: #005eb8;
+  background-color: var(--highlight-color);
 }
 
 .menu-superior button.active {
-  background-color: #005eb8;
+  background-color: var(--highlight-color);
 }
 
 .menu-lateral {
   width: 250px;
   background-color: #f3f3f3;
   color: black;
-    transition: width 0.3s, transform 0.3s; /* Agrega la transición para el desplazamiento */
+  transition: width 0.3s, transform 0.3s; /* Agrega la transición para el desplazamiento */
 }
 
 .menu-lateral.menu-reducido {
   width: 40px;
 }
-
-
 
 .subopcion {
   display: block;
@@ -201,14 +203,12 @@ export default class Menu extends Vue {
 
 .subopcion-icono {
   transform: 2s;
-  padding-right: 20px; 
+  padding-right: 20px;
 }
 
 .menu-lateral.menu-reducido .subopcion-descripcion {
   display: inline;
 }
-
-
 
 .toggle-button {
   /* position: absolute; */
@@ -223,7 +223,7 @@ export default class Menu extends Vue {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: 0.3s /* Agrega la transición para el desplazamiento */
+  transition: 0.3s; /* Agrega la transición para el desplazamiento */
 }
 
 .toggle-button i {
@@ -233,13 +233,22 @@ export default class Menu extends Vue {
 .toggle-button:hover {
   background-color: #e5e5e5;
 }
-.toggle-button.menu-reducido-button  {
+.toggle-button.menu-reducido-button {
   padding-left: 220px;
   padding-right: 30px;
   transition: 0.3s;
 }
 
-.main-content{
+.main-content {
   padding: 10px 20px;
+}
+
+.logo {
+  font-family: Arial, sans-serif; /* Choose a font */
+  font-size: 26px; /* Adjust the size */
+  font-weight: bold; /* Make it bold */
+  color: #fff; /* White color */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Some shadow */
+  padding: 10px 15px;
 }
 </style>
